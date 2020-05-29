@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.sql.*;
 
 /**
  *
@@ -30,7 +32,13 @@ import javax.swing.JOptionPane;
   * Mot de passe du user
   */
   private static final String passwd = "";
-
+   public ArrayList<String> tables = new ArrayList<>();
+   public ArrayList<String> requetes = new ArrayList<>();
+   public ArrayList<String> requetesMaj = new ArrayList<>();
+   //private final Connection conn;
+   //private final Statement stmt;
+    private ResultSet rset;
+    private ResultSetMetaData rsetMeta;
   /**
   * Objet Connection
   */
@@ -51,4 +59,18 @@ import javax.swing.JOptionPane;
     }		
     return connect;	
   }
+      public void ajouterTable(String table) {
+        tables.add(table);
+    }
+      
+      
+      
+      
+    /**
+     * Méthode qui ajoute la requete de selection en parametre dans son
+     * ArrayList
+     *
+     * @param requete
+     */
+
     }

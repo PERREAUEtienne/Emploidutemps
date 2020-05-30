@@ -10,64 +10,32 @@ package piscinejava;
  * @author etien
  */
 
+import Controlleur.Etudiant;
 import Controlleur.Utilisateur;
 import DAO.DAO;
+import DAO.EtudiantDAO;
 import DAO.UtilisateurDAO;
 import java.awt.event.*;
-import java.awt.*;
-import java.io.IOException;
-import java.util.*;
-import javax.swing.*;
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.io.FileReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.*;
-import java.util.Scanner;
-import javax.swing.*;    // Needed for Swing classes
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static javafx.scene.paint.Color.color;
-import static javafx.scene.paint.Color.color;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.BorderFactory;
-import javax.swing.border.Border;
 
 
 import java.io.IOException;
 
 
 public class Interface extends JFrame {
-     private JPanel panel, panel2, panelprof, paneletudiant, panelupdate, panelbuyer, panelreupdate;             // To reference a panel
+     private JPanel panel, panel2, panelprof, paneletudiant, panelupdate, paneledt, panelreupdate;             // To reference a panel
     private JLabel messageLabel2, messageLabel3, welcome, tozz1, tozz2, tozz3, lb1, msgloc, msgloc3, msgarea, msgpri, msghal, msgkit, msgsemifur, msgfur, msgremove, test1, test2, espace;      // To reference a label
     private JTextField idtext, prop1, prop2, prop3, prop4, prop5, prop6, prop7, propremove, propupdate, prop8, prop9, prop10, prop11, prop12, prop13, prop14;
     private JTextField passwordtext;// To reference a text field
-    private JButton loginbutton, removebutton, addbutton, updatebutton, okremovebutton, createbutton, okupdatebutton, reupdatebutton;
+    private JButton loginbutton, edpbutton, addbutton, updatebutton, okremovebutton, createbutton, okupdatebutton, reupdatebutton;
     
     public Interface() throws IOException {
         
@@ -171,14 +139,52 @@ public class Interface extends JFrame {
             paneletudiant = new JPanel();
             tozz1 = new JLabel("Welcome Etudiant");
             paneletudiant.add(tozz1);
+            
+            edpbutton = new JButton("Emploi du temps");
+            edpbutton.addActionListener(new EdpButtonListener());
+        
+            paneletudiant.add(edpbutton);
             Container frame = getContentPane();
             frame.add(paneletudiant);
             // Display the window.
             setVisible(true);
         }
     }
-        private class MainWindowProf extends JFrame {
+    
+    private class EdpButtonListener implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        
+        
+            try {
+                new MainWindowEdp().setVisible(true);
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+     private class MainWindowEdp extends JFrame {
+
+        public MainWindowEdp() throws IOException {
+            setTitle("Emploi du temps");
+            paneledt= new JPanel();
+            setLocation(600, 250);
+            setSize(600, 400);
+            DAO<Etudiant> etudiantDao = new EtudiantDAO(SdzConnection.getInstance());
+            for(int i = 1; i < 5; i++){
+                 Etudiant etudiant = etudiantDao.find(i);
+                System.out.println("Cours N°" + etudiant.getId_utilisateur() + "  - " + etudiant.getNumero());
+                tozz2 = new JLabel();
+             }
+            Container frame = getContentPane();
+            frame.add(paneletudiant);
+            // Display the window.
+            setVisible(true);
+        }
+    }
+    }
+         private class MainWindowProf extends JFrame {
         public MainWindowProf() throws IOException {
             setTitle("Page du prof");
            
@@ -226,7 +232,7 @@ public class Interface extends JFrame {
         }
     }
         
-    }
+    
      public static void main(String[] args) throws FileNotFoundException, IOException {
 
         //PrintWriter outputFile = new PrintWriter(""C:\\Users\\etien\\Desktop\\ECE cours\\Projet Programming london\\ProjectV0\\Textfile.txt"");

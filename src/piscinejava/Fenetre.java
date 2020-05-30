@@ -155,9 +155,10 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
      * Méthode privée qui initialise la liste des tables
      */
     private void remplirTables() {
-        maconnexion.ajouterTable("Emp");
-        maconnexion.ajouterTable("Dept");
-        maconnexion.ajouterTable("Mission");
+
+        maconnexion.ajouterTable("utilisateur");
+        maconnexion.ajouterTable("cours");
+
     }
 
     /**
@@ -171,6 +172,8 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         maconnexion.ajouterRequete("SELECT hiredate, empno, ename FROM Emp WHERE (((hiredate)>='1981-05-01' And (hiredate)<'1981-05-31'))ORDER BY hiredate;");
         maconnexion.ajouterRequete("SELECT ename, job FROM Emp ORDER BY job;");
         maconnexion.ajouterRequete("SELECT DISTINCT dname, job FROM Dept, Emp WHERE Dept.deptno=Emp.deptno AND job='Clerk';");
+        maconnexion.ajouterRequete("SELECT id FROM utilisateur;");
+        maconnexion.ajouterRequete("SELECT Prenom FROM utilisateur;");
     }
 
     /**

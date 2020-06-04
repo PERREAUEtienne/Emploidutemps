@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package piscinejava;
+
+import java.sql.SQLException;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -24,8 +27,9 @@ public class Controleur {
      *
      * @param s
      */
-    public static void main(String[] s) {
+    public static void main(String[] s) throws SQLException {
         // creation de la fenetre
         Fenetre f = new Fenetre();
+        f.affichage();
     }
 }

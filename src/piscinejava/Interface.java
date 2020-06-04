@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 public class Interface extends JFrame {
@@ -88,6 +89,11 @@ public class Interface extends JFrame {
 
                 panel.add(welcome);
                 Fenetre f = new Fenetre();
+                try {
+                    f.affichage();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             else if(id.equals(utilisateur.getEmail()) && password.equals(utilisateur.getPasswd()) && utilisateur.getDroit()==3){
                 try {

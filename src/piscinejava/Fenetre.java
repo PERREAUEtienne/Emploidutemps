@@ -26,6 +26,12 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+
 /**
  *
  * Affiche dans la fenetre graphique les champs de tables et les requetes de la
@@ -41,13 +47,11 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
      */
 
     private Connexion maconnexion;
-    private final JLabel tab, req, res, lignes;
-    private final JLabel nameBDD, requeteLabel;
-    private final JTextField requeteTexte, nameBDDTexte;
-    private final JButton exec, local;
-    private final java.awt.List listeDeTables, listeDeRequetes;
-    private final JTextArea fenetreLignes, fenetreRes;
-    private final JPanel p0, p1, nord, p2, p3;
+    private final JLabel lundi, mercredi, jeudi, mardi,vendredi, titre;
+    private JLabel courr;
+    private final java.awt.List courLundi, courMardi, courMercredi, courJeudi, courVendredi;
+    private final JPanel p0, p1, nord, p2, p3, p4;
+
 
     /**
      * Constructeur qui initialise tous les objets graphiques de la fenetre
@@ -65,27 +69,27 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
 
         // creation des boutons
         //connect = new JButton("Connexion ECE");
-        local = new JButton("Connexion locale");
-        exec = new JButton("Executer");
 
         // creation des listes pour les tables et les requetes
-        listeDeTables = new java.awt.List(10, false);
-        listeDeRequetes = new java.awt.List(10, false);
+        courLundi = new java.awt.List(10, false);
+        courMardi = new java.awt.List(10, false);
+        courMercredi = new java.awt.List(10, false);
+        courJeudi = new java.awt.List(10, false);
+        courVendredi = new java.awt.List(10, false);
 
         // creation des textes
 
-        nameBDDTexte = new JTextField();
-        fenetreLignes = new JTextArea();
-        fenetreRes = new JTextArea();
-        requeteTexte = new JTextField();
-
+        
+        
         // creation des labels
-        tab = new JLabel("Tables", JLabel.CENTER);
-        lignes = new JLabel("Lignes", JLabel.CENTER);
-        req = new JLabel("Requetes de sélection", JLabel.CENTER);
-        res = new JLabel("Résultats requête", JLabel.CENTER);
-        nameBDD = new JLabel("nom base :", JLabel.CENTER);
-        requeteLabel = new JLabel("Entrez votre requete de sélection :", JLabel.CENTER);
+        lundi = new JLabel("Lundi", JLabel.CENTER);
+        mardi = new JLabel("Mardi", JLabel.CENTER);
+        mercredi = new JLabel("Mercredi", JLabel.CENTER);
+        jeudi = new JLabel("Jeudi", JLabel.CENTER);
+        vendredi = new JLabel("vendredi", JLabel.CENTER);
+        titre = new JLabel("Bienvenue sur votre emploi du temps", JLabel.CENTER);
+        JTextField semaine = new JTextField(10);
+        
 
         // creation des panneaux
         p0 = new JPanel();
@@ -93,6 +97,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         nord = new JPanel();
         p2 = new JPanel();
         p3 = new JPanel();
+        p4 = new JPanel();
 
         // mise en page des panneaux
         p0.setLayout(new GridLayout(1, 3));
@@ -100,41 +105,40 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         nord.setLayout(new GridLayout(2, 1));
         p2.setLayout(new GridLayout(1, 4));
         p3.setLayout(new GridLayout(1, 3));
+        p4.setLayout(new GridLayout(1, 3));
 
         // ajout des objets graphqiues dans les panneaux
+         Border blackline = BorderFactory.createLineBorder(Color.black);
+        p2.setBorder(blackline);
 
-        p0.add(nameBDD);
-        p0.add(nameBDDTexte);
-        p0.add(local);
-        p1.add(tab);
-        p1.add(lignes);
-        p1.add(req);
-        p1.add(res);
+        p0.add(titre);
+        p1.add(lundi);
+        p1.add(mardi);
+        p1.add(mercredi);
+        p1.add(jeudi);
+        p1.add(vendredi);
         nord.add("North", p0);
         nord.add("North", p1);
-        p2.add(listeDeTables);
-        p2.add(fenetreLignes);
-        p2.add(listeDeRequetes);
-        p2.add(fenetreRes);
-        p3.add(requeteLabel);
-        p3.add(requeteTexte);
-        p3.add(exec);
+        p0.add(semaine);
+        p2.add(courLundi); 
+        p2.add(courMardi);
+        p2.add(courMercredi);
+        p2.add(courJeudi);
+        p2.add(courVendredi);
 
         // ajout des listeners
-        exec.addActionListener(this);
-        local.addActionListener(this);
-        listeDeTables.addItemListener(this);
-        listeDeRequetes.addItemListener(this);
 
         // couleurs des objets graphiques
-        tab.setBackground(Color.MAGENTA);
-        lignes.setBackground(Color.MAGENTA);
-        req.setBackground(Color.MAGENTA);
-        res.setBackground(Color.MAGENTA);
-        listeDeTables.setBackground(Color.CYAN);
-        fenetreLignes.setBackground(Color.WHITE);
-        listeDeRequetes.setBackground(Color.GREEN);
-        fenetreRes.setBackground(Color.WHITE);
+        lundi.setBackground(Color.MAGENTA);
+        mardi.setBackground(Color.MAGENTA);
+        mercredi.setBackground(Color.MAGENTA);
+        jeudi.setBackground(Color.MAGENTA);
+        vendredi.setBackground(Color.MAGENTA);
+        courLundi.setBackground(Color.GRAY);
+        courMercredi.setBackground(Color.GRAY);
+        courMardi.setBackground(Color.GRAY);
+        courJeudi.setBackground(Color.GRAY);
+        courVendredi.setBackground(Color.GRAY);
         p1.setBackground(Color.LIGHT_GRAY);
 
         // disposition geographique des panneaux
@@ -152,136 +156,180 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
     }
 
     /**
-     * Méthode privée qui initialise la liste des tables
-     */
-    private void remplirTables() {
-
-        maconnexion.ajouterTable("utilisateur");
-        maconnexion.ajouterTable("cours");
-
-    }
-
-    /**
-     * Méthode privée qui initialise la liste des requetes de selection
-     */
-    private void remplirRequetes() {
-        maconnexion.ajouterRequete("SELECT ename, sal FROM Emp ORDER BY sal;");
-        maconnexion.ajouterRequete("SELECT Dept.*, Emp.*, Mission.* FROM Dept, Emp, Mission WHERE Dept.deptno=Emp.deptno AND Emp.empno=Mission.empno;");
-        maconnexion.ajouterRequete("SELECT AVG (Emp.sal) FROM Emp, Mission WHERE Emp.empno = Mission.empno;");
-        maconnexion.ajouterRequete("SELECT Dept.*, Emp.* FROM Dept, Emp WHERE Dept.deptno=Emp.deptno AND comm>0;");
-        maconnexion.ajouterRequete("SELECT hiredate, empno, ename FROM Emp WHERE (((hiredate)>='1981-05-01' And (hiredate)<'1981-05-31'))ORDER BY hiredate;");
-        maconnexion.ajouterRequete("SELECT ename, job FROM Emp ORDER BY job;");
-        maconnexion.ajouterRequete("SELECT DISTINCT dname, job FROM Dept, Emp WHERE Dept.deptno=Emp.deptno AND job='Clerk';");
-        maconnexion.ajouterRequete("SELECT id FROM utilisateur;");
-        maconnexion.ajouterRequete("SELECT Prenom FROM utilisateur;");
-    }
-
-    /**
-     * Méthode privée qui initialise la liste des requetes de MAJ
-     */
-    private void remplirRequetesMaj() {
-        // Requêtes d'insertion
-        maconnexion.ajouterRequeteMaj("INSERT INTO Dept (deptno,dname,loc) VALUES (50,'ECE','Paris');");
-
-        // Requêtes de modification
-        maconnexion.ajouterRequeteMaj("UPDATE Dept SET loc='Eiffel' WHERE loc='Paris';");
-
-        // Requêtes de suppression
-        maconnexion.ajouterRequeteMaj("DELETE FROM Dept WHERE loc='Eiffel';");
-
-    }
-
-    /**
-     *
-     * Afficher les tables
-     */
-    public void afficherTables() {
-        for (String table : maconnexion.tables) {
-            listeDeTables.add(table);
-        }
-    }
-
-    /**
-     *
-     * Afficher les lignes de la table sélectionnée
-     *
-     * @param nomTable
-     */
-    public void afficherLignes(String nomTable) {
-        try {
-            ArrayList<String> liste;
-
-            // effacer les résultats
-            fenetreLignes.removeAll();
-
-            // recupérér les résultats de la table selectionnee
-            liste = maconnexion.remplirChampsTable(nomTable);
-
-            // afficher les champs de la table selectionnee 
-            fenetreLignes.setText("");
-            for (String liste1 : liste) {
-                fenetreLignes.append(liste1);
-            }
-
-            // recuperer la liste de la table sélectionnée
-            String requeteSelectionnee = "select * from " + nomTable + ";";
-            liste = maconnexion.remplirChampsRequete(requeteSelectionnee);
-
-            // afficher les lignes de la requete selectionnee a partir de la liste
-            for (String liste1 : liste) {
-                fenetreLignes.append(liste1);
-            }
-
-        } catch (SQLException e) {
-            // afficher l'erreur dans les résultats
-            fenetreRes.setText("");
-            fenetreRes.append("Echec table SQL");
-            e.printStackTrace();
-
-        }
-    }
-
-    /**
-     *
-     * Afficher les requetes de selection et de MAJ dans la fenetre
-     */
-    public void afficherRequetes() {
-        for (String requete : maconnexion.requetes) {
-            listeDeRequetes.add(requete);
-        }
-    }
-
-    /**
      *
      * Afficher et retourner les résultats de la requete sélectionnée
      *
-     * @param requeteSelectionnee
      * @return
      * @throws java.sql.SQLException
      */
-    public ArrayList<String> afficherRes(String requeteSelectionnee) throws SQLException {
-        ArrayList<String> liste = null;
+    public ArrayList<String> afficherLundi() throws SQLException {
+        ArrayList<String> listeLundi = null;
         try {
 
-            // effacer les résultats
-            fenetreRes.removeAll();
-
             // recupérér les résultats de la requete selectionnee
-            liste = maconnexion.remplirChampsRequete(requeteSelectionnee);
-
+              listeLundi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
+                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
+                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
+                    + "AND seance.id=seance_groupes.id_seance "
+                    + "AND groupe.id=seance_groupes.id_groupe "
+                    + "AND seance.id=seance_salles.id_seance "
+                    + "AND salle.id=seance_salles.id_salle "
+                    + "AND site.id=salle.id_site "
+                    + "AND DAYOFWEEK(seance.date) = 2 "
+                    + "AND cours.id=seance.id_cours "
+                    + "AND type_cours.id=seance.id_type");
+                    
+                       
             // afficher les lignes de la requete selectionnee a partir de la liste
-            fenetreRes.setText("");
-            for (String liste1 : liste) {
-                fenetreRes.append(liste1);
+            for (String liste1 : listeLundi) {
+                courLundi.add(liste1);
+               
             }
         } catch (SQLException e) {
-            // afficher l'erreur dans les résultats
-            fenetreRes.setText("");
-            fenetreRes.append("Echec requete SQL");
         }
-        return liste;
+        return listeLundi;        
     }
 
+    public ArrayList<String> afficherMardi() throws SQLException {
+        ArrayList<String> listeMardi = null;
+        try {
+            // recupérér les résultats de la requete
+            
+                     listeMardi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
+                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
+                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
+                    + "AND seance.id=seance_groupes.id_seance "
+                    + "AND groupe.id=seance_groupes.id_groupe "
+                    + "AND seance.id=seance_salles.id_seance "
+                    + "AND salle.id=seance_salles.id_salle "
+                    + "AND site.id=salle.id_site "
+                    + "AND DAYOFWEEK(seance.date) = 3 "
+                    + "AND cours.id=seance.id_cours "
+                    + "AND type_cours.id=seance.id_type");
+            for (String liste1 : listeMardi) {
+                    courMardi.add(liste1);
+                }
+        }catch (SQLException e) {
+        }
+        return listeMardi;
+    }
+    
+    public ArrayList<String> afficherMercredi() throws SQLException {
+        ArrayList<String> listeMercredi = null;
+        try {
+            // recupérér les résultats de la requete
+              listeMercredi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
+                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
+                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
+                    + "AND seance.id=seance_groupes.id_seance "
+                    + "AND groupe.id=seance_groupes.id_groupe "
+                    + "AND seance.id=seance_salles.id_seance "
+                    + "AND salle.id=seance_salles.id_salle "
+                    + "AND site.id=salle.id_site "
+                    + "AND DAYOFWEEK(seance.date) = 4 "
+                    + "AND cours.id=seance.id_cours "
+                    + "AND type_cours.id=seance.id_type");
+
+
+            for (String liste1 : listeMercredi) {
+                    courMercredi.add(liste1);
+                }
+        }catch (SQLException e) {
+        }
+        return listeMercredi;
+    }
+    
+    public ArrayList<String> afficherJeudi() throws SQLException {
+        ArrayList<String> listeJeudi = null;
+        try {
+            // recupérér les résultats de la requete
+             listeJeudi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
+                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
+                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
+                    + "AND seance.id=seance_groupes.id_seance "
+                    + "AND groupe.id=seance_groupes.id_groupe "
+                    + "AND seance.id=seance_salles.id_seance "
+                    + "AND salle.id=seance_salles.id_salle "
+                    + "AND site.id=salle.id_site "
+                    + "AND DAYOFWEEK(seance.date) = 5 "
+                    + "AND cours.id=seance.id_cours "
+                    + "AND type_cours.id=seance.id_type");
+
+            for (String liste1 : listeJeudi) {
+                    courJeudi.add(liste1);
+                }
+        }catch (SQLException e) {
+        }
+        return listeJeudi;
+    }
+    
+    public ArrayList<String> afficherVendredi() throws SQLException {
+        ArrayList<String> listeVendredi = null;
+        try {
+            // recupérér les résultats de la requete
+                listeVendredi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
+                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
+                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
+                    + "AND seance.id=seance_groupes.id_seance "
+                    + "AND groupe.id=seance_groupes.id_groupe "
+                    + "AND seance.id=seance_salles.id_seance "
+                    + "AND salle.id=seance_salles.id_salle "
+                    + "AND site.id=salle.id_site "
+                    + "AND DAYOFWEEK(seance.date) = 6 "
+                    + "AND cours.id=seance.id_cours "
+                    + "AND type_cours.id=seance.id_type");
+
+            for (String liste1 : listeVendredi) {
+                    courVendredi.add(liste1);
+                }
+        }catch (SQLException e) {
+        }
+        return listeVendredi;
+    }
+    
+    public void affichage() throws SQLException{
+        try {
+                    // tentative de connexion si les 4 attributs sont remplis
+                    //maconnexion = new Connexion("jps", "root", "");
+                    maconnexion = new Connexion("edp", "root", "");
+
+                    // effacer les listes de tables et de requêtes
+                    courLundi.removeAll();
+                    courMardi.removeAll();
+                    courMercredi.removeAll();
+                    courJeudi.removeAll();
+                    courVendredi.removeAll();
+                    
+
+                    // initialisation de la liste des requetes de selection et de MAJ
+
+                    // afficher la liste de tables et des requetes
+
+                    // se positionner sur la première table et requête de selection
+                    courLundi.select(0);
+                    courMardi.select(0);
+                    courMercredi.select(0);
+                    courJeudi.select(0);
+                    courVendredi.select(0);
+
+                    // afficher les champs de la table sélectionnée
+
+                    // recuperer les lignes de la table selectionnee
+
+                    // recuperer la liste des lignes de la requete selectionnee
+                    
+
+                    // afficher les résultats de la requete selectionnee
+                    afficherLundi();
+                    afficherMardi();
+                    afficherMercredi();
+                    afficherJeudi();
+                    afficherVendredi();
+                } catch (ClassNotFoundException cnfe) {
+                    System.out.println("Connexion echouee : probleme de classe");
+                    cnfe.printStackTrace();
+                }
+    }
     /**
      *
      * Pour gerer les actions sur les boutons on utilise la fonction
@@ -292,72 +340,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
     @Override
     @SuppressWarnings("CallToThreadDumpStack")
     public void actionPerformed(ActionEvent evt) {
-        Object source = evt.getSource();
-
-        // tester cas de la commande evenementielle
-        if (source == local) {
-            ArrayList<String> liste;
-            try {
-                try {
-                    // tentative de connexion si les 4 attributs sont remplis
-                    //maconnexion = new Connexion("jps", "root", "");
-                    maconnexion = new Connexion("edp", "root", "");
-
-                    // effacer les listes de tables et de requêtes
-                    listeDeTables.removeAll();
-                    listeDeRequetes.removeAll();
-
-                    // initialisation de la liste des requetes de selection et de MAJ
-                    remplirTables();
-                    remplirRequetes();
-                    remplirRequetesMaj();
-
-                    // afficher la liste de tables et des requetes
-                    afficherTables();
-                    afficherRequetes();
-
-                    // se positionner sur la première table et requête de selection
-                    listeDeTables.select(0);
-                    listeDeRequetes.select(0);
-
-                    // afficher les champs de la table sélectionnée
-                    String nomTable = listeDeTables.getSelectedItem();
-
-                    // recuperer les lignes de la table selectionnee
-                    afficherLignes(nomTable);
-
-                    // recuperer la liste des lignes de la requete selectionnee
-                    String requeteSelectionnee = listeDeRequetes.getSelectedItem();
-
-                    // afficher les résultats de la requete selectionnee
-                    afficherRes(requeteSelectionnee);
-                } catch (ClassNotFoundException cnfe) {
-                    System.out.println("Connexion echouee : probleme de classe");
-                    cnfe.printStackTrace();
-                }
-            } catch (SQLException e) {
-                System.out.println("Connexion echouee : probleme SQL");
-                e.printStackTrace();
-            }
-        } else if (source == exec) {
-            String requeteSelectionnee = requeteTexte.getText(); // récupérer le texte de la requête
-
-            // effacer les résultats
-            fenetreRes.removeAll();
-
-            try {
-                // afficher les résultats de la requete selectionnee
-                if (afficherRes(requeteSelectionnee) != null) {
-                    maconnexion.ajouterRequete(requeteSelectionnee);
-                    listeDeRequetes.removeAll();
-                    afficherRequetes();
-                }
-
-            } catch (SQLException ex) {
-
-            }
-
-        }
+       
     }
 
     /**
@@ -370,19 +353,6 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
     @Override
     @SuppressWarnings("CallToThreadDumpStack")
     public void itemStateChanged(ItemEvent evt) {
-        // sélection d'une requete et afficher ses résultats
-        if (evt.getSource() == listeDeRequetes) {
-            // recuperer la liste des lignes de la requete selectionnee
-            String requeteSelectionnee = listeDeRequetes.getSelectedItem();
-            try {
-                afficherRes(requeteSelectionnee);
-            } catch (SQLException ex) {
-                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if (evt.getSource() == listeDeTables) {
-            // afficher les lignes de la table sélectionnée
-            String nomTable = listeDeTables.getSelectedItem();
-            afficherLignes(nomTable);
-        }
+        
     }
 }

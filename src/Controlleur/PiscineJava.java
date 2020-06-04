@@ -7,8 +7,11 @@ package Controlleur;
 
 import DAO.CoursDAO;
 import DAO.EtudiantDAO;
+
 import DAO.DAO;
+import DAO.UtilisateurDAO;
 import piscinejava.SdzConnection;
+import piscinejava.Connexion;
 
 
 /**
@@ -22,11 +25,6 @@ public class PiscineJava {
      */
     public static void main(String[] args) {
         //Testons des élèves
-    DAO<Etudiant> etudiantDao = new EtudiantDAO(SdzConnection.getInstance());
-    for(int i = 1; i < 5; i++){
-      Etudiant etudiant = etudiantDao.find(i);
-      System.out.println("Cours N°" + etudiant.getId_utilisateur() + "  - " + etudiant.getNumero());
-    }
-    }
+   
 
-}
+}}

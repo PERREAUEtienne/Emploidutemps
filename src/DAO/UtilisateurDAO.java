@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Controlleur.Utilisateur;
-
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -26,6 +26,33 @@ public class UtilisateurDAO extends DAO<Utilisateur>{
      */
     @Override
   public boolean create(Utilisateur obj) {
+      try {
+			 
+			//Vu que nous sommes sous postgres, nous allons chercher manuellement
+			//la prochaine valeur de la séquence correspondant à l'id de notre table
+			ResultSet result = this	.connect
+                                    .createStatement(
+                                    		ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                                    		ResultSet.CONCUR_UPDATABLE
+                                    ).executeQuery(
+                                    		"SELECT NEXTVAL('langage_lan_id_seq') as id"
+                                    );
+			if(result.first()){
+				long id = result.getLong("id");
+    			PreparedStatement prepare = this	.connect
+                                                    .prepareStatement(
+                                                    	"INSERT INTO Utilisateur (lan_id, lan_nom) VALUES(?, ?)"
+                                                    );
+				prepare.setLong(1, id);
+				prepare.setString(2, obj.getNom());
+				
+				prepare.executeUpdate();
+					
+				
+			}
+	    } catch (SQLException e) {
+	            e.printStackTrace();
+	    }
     return false;
   }
 
@@ -36,7 +63,22 @@ public class UtilisateurDAO extends DAO<Utilisateur>{
      */
     @Override
   public boolean delete(Utilisateur obj) {
-    return false;
+      
+      
+      try {
+			
+                this    .connect
+                    	.createStatement(
+                             ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                             ResultSet.CONCUR_UPDATABLE
+                        ).executeUpdate(
+                             "DELETE FROM Utilisateur WHERE id = " + obj.getId()
+                        );
+			
+	    } catch (SQLException e) {
+	            e.printStackTrace();
+	    }
+  return false;
   }
    
     /**

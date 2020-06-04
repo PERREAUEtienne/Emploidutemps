@@ -86,13 +86,8 @@ public class Interface extends JFrame {
             //System.out.println("Email N°" + utilisateur.getEmail() + " Password " + utilisateur.getPasswd());
             if (id.equals(utilisateur.getEmail()) && password.equals(utilisateur.getPasswd()) && utilisateur.getDroit()==4) {
 
-                try {
-                    panel.add(welcome);
-                    new MainWindowEtudiant().setVisible(true);
-                    
-                } catch (IOException ex) {
-                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                panel.add(welcome);
+                Fenetre f = new Fenetre();
             }
             else if(id.equals(utilisateur.getEmail()) && password.equals(utilisateur.getPasswd()) && utilisateur.getDroit()==3){
                 try {

@@ -10,10 +10,14 @@ package piscinejava;
  * @author etien
  */
 
+import Controlleur.Cours;
 import Controlleur.Etudiant;
+import Controlleur.Seance;
 import Controlleur.Utilisateur;
+import DAO.CoursDAO;
 import DAO.DAO;
 import DAO.EtudiantDAO;
+import DAO.SeanceDAO;
 import DAO.UtilisateurDAO;
 import java.awt.event.*;
 import java.awt.Container;
@@ -37,7 +41,7 @@ public class Interface extends JFrame {
     private JTextField idtext, prop1, prop2, prop3, prop4, prop5, prop6, prop7, propremove, propupdate, prop8, prop9, prop10, prop11, prop12, prop13, prop14;
     private JTextField passwordtext;// To reference a text field
     private JButton loginbutton, edpbutton, addbutton, updatebutton, okremovebutton, createbutton, okupdatebutton, reupdatebutton;
-    
+    private int v;
     public Interface() throws IOException {
         
         super("hyperplanning");
@@ -68,7 +72,22 @@ public class Interface extends JFrame {
         setVisible(true);
                
 }
+
+    /**
+     *
+     * @param b
+     * @return
+     */
+    public int returnID(int b){
+        
+           DAO<Utilisateur> utilisateurDao = new UtilisateurDAO(SdzConnection.getInstance());
+            for(int i = 1; i < 10; i++){
+            Utilisateur utilisateur = utilisateurDao.find(b);
+                v =utilisateur.getId();
+                 
     
+      }return v;
+    }
     private class LoginButtonListener implements ActionListener {
 
         @Override
@@ -82,23 +101,27 @@ public class Interface extends JFrame {
             password = passwordtext.getText();
             
             DAO<Utilisateur> utilisateurDao = new UtilisateurDAO(SdzConnection.getInstance());
-            for(int i = 1; i < 7; i++){
+            for(int i = 1; i < 10; i++){
             Utilisateur utilisateur = utilisateurDao.find(i);
             //System.out.println("Email N°" + utilisateur.getEmail() + " Password " + utilisateur.getPasswd());
             if (id.equals(utilisateur.getEmail()) && password.equals(utilisateur.getPasswd()) && utilisateur.getDroit()==4) {
 
                 panel.add(welcome);
                 Fenetre f = new Fenetre();
+                
+                System.out.println(utilisateur.getId());
                 try {
                     f.affichage();
                 } catch (SQLException ex) {
+                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
                     Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             else if(id.equals(utilisateur.getEmail()) && password.equals(utilisateur.getPasswd()) && utilisateur.getDroit()==3){
                 try {
                     panel.add(welcome);
-                    new MainWindowProf().setVisible(true);
+                    new MainWindowEdp().setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -112,10 +135,11 @@ public class Interface extends JFrame {
                 }
             }
               else if(id.equals(utilisateur.getEmail()) && password.equals(utilisateur.getPasswd()) && utilisateur.getDroit()==1){
+                  panel.add(welcome);
+                  FenetreAdmin f=new FenetreAdmin();
                 try {
-                    panel.add(welcome);
-                    new MainWindowAdmin().setVisible(true);
-                } catch (IOException ex) {
+                    f.affichage();
+                } catch (SQLException ex) {
                     Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -238,6 +262,9 @@ public class Interface extends JFrame {
 
         //PrintWriter outputFile = new PrintWriter(""C:\\Users\\etien\\Desktop\\ECE cours\\Projet Programming london\\ProjectV0\\Textfile.txt"");
         Interface v = new Interface();
+       
+
+        
 
     }
 

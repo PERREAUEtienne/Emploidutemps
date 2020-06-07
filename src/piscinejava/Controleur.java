@@ -29,7 +29,9 @@ public class Controleur {
      */
     public static void main(String[] s) throws SQLException {
         // creation de la fenetre
-        Fenetre f = new Fenetre();
+        FenetreAdmin f = new FenetreAdmin();
         f.affichage();
+        
+       
     }
 }

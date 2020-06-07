@@ -25,7 +25,7 @@ public abstract class DAO<T> {
   * @param obj
   * @return boolean 
   */
-  public abstract boolean delete(T obj);
+  public  abstract boolean delete(T obj);
 
   /**
   * Méthode de mise à jour

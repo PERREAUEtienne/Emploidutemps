@@ -36,6 +36,19 @@ public class CoursDAO extends DAO<Cours>{
      */
     @Override
   public boolean delete(Cours obj) {
+         try {
+			
+                this    .connect
+                    	.createStatement(
+                             ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                             ResultSet.CONCUR_UPDATABLE
+                        ).executeUpdate(
+                             "DELETE FROM cours WHERE id= " + obj.getId()
+                        );
+			
+	    } catch (SQLException e) {
+	            e.printStackTrace();
+	    }
     return false;
   }
    
@@ -46,6 +59,7 @@ public class CoursDAO extends DAO<Cours>{
      */
     @Override
   public boolean update(Cours obj) {
+   
     return false;
   }
    

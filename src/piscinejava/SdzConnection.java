@@ -20,6 +20,7 @@ import java.sql.*;
 
   /**
   * URL de connection
+  * Connection fait maison TEST 
   */
   private static final String url = "jdbc:mysql://localhost:3308/edp";
 

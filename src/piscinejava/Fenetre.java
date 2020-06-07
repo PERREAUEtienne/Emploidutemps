@@ -20,6 +20,7 @@ package piscinejava;
  */
 import java.awt.event.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 import java.sql.*;
@@ -31,6 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import java.awt.Container;
 
 /**
  *
@@ -51,6 +53,11 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
     private JLabel courr;
     private final java.awt.List courLundi, courMardi, courMercredi, courJeudi, courVendredi;
     private final JPanel p0, p1, nord, p2, p3, p4;
+    
+    private JPanel p6;
+    private Interface f;
+  
+   
 
 
     /**
@@ -63,10 +70,10 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
 
         // mise en page (layout) de la fenetre visible
         setLayout(new BorderLayout());
-        setBounds(0, 0, 400, 400);
+        setBounds(0, 0, 1000,1000);
         setResizable(true);
         setVisible(true);
-
+         
         // creation des boutons
         //connect = new JButton("Connexion ECE");
 
@@ -88,7 +95,8 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         jeudi = new JLabel("Jeudi", JLabel.CENTER);
         vendredi = new JLabel("vendredi", JLabel.CENTER);
         titre = new JLabel("Bienvenue sur votre emploi du temps", JLabel.CENTER);
-        JTextField semaine = new JTextField(10);
+      
+        
         
 
         // creation des panneaux
@@ -98,6 +106,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         p2 = new JPanel();
         p3 = new JPanel();
         p4 = new JPanel();
+        
 
         // mise en page des panneaux
         p0.setLayout(new GridLayout(1, 3));
@@ -119,7 +128,8 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         p1.add(vendredi);
         nord.add("North", p0);
         nord.add("North", p1);
-        p0.add(semaine);
+       
+        
         p2.add(courLundi); 
         p2.add(courMardi);
         p2.add(courMercredi);
@@ -167,17 +177,18 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         try {
 
             // recupérér les résultats de la requete selectionnee
-              listeLundi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
-                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
-                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
-                    + "AND seance.id=seance_groupes.id_seance "
-                    + "AND groupe.id=seance_groupes.id_groupe "
-                    + "AND seance.id=seance_salles.id_seance "
-                    + "AND salle.id=seance_salles.id_salle "
-                    + "AND site.id=salle.id_site "
-                    + "AND DAYOFWEEK(seance.date) = 2 "
-                    + "AND cours.id=seance.id_cours "
-                    + "AND type_cours.id=seance.id_type");
+              listeLundi = maconnexion.remplirChampsRequete("SELECT seance.id,cours.nom , groupe.nom,salle.nom,site.nom,type_cours.nom, utilisateur.nom, seance.heure_debut,seance.heure_fin,seance.etat "
+                          + "FROM seance,seance_groupes,groupe,cours,salle,seance_salles,site,type_cours,utilisateur,seance_enseignants"
+                          + " WHERE seance_groupes.id_seance=seance.id "
+                          + "AND groupe.id=seance_groupes.id_groupe "
+                          + "AND DAYOFWEEK(seance.date) = 2 "
+                          + "AND cours.id= seance.id_cours"
+                          + " AND seance.id= seance_salles.id_seance "
+                          + "AND salle.id=seance_salles.id_salle "
+                          + "AND salle.id_site=site.id "
+                          + "AND type_cours.id=seance.id_type"
+                          + " AND seance.id=seance_enseignants.id_seance "
+                          + "AND seance_enseignants.id_enseignant=utilisateur.id ");
                     
                        
             // afficher les lignes de la requete selectionnee a partir de la liste
@@ -189,23 +200,25 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         }
         return listeLundi;        
     }
+    
 
     public ArrayList<String> afficherMardi() throws SQLException {
         ArrayList<String> listeMardi = null;
         try {
             // recupérér les résultats de la requete
-            
-                     listeMardi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
-                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
-                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
-                    + "AND seance.id=seance_groupes.id_seance "
-                    + "AND groupe.id=seance_groupes.id_groupe "
-                    + "AND seance.id=seance_salles.id_seance "
-                    + "AND salle.id=seance_salles.id_salle "
-                    + "AND site.id=salle.id_site "
-                    + "AND DAYOFWEEK(seance.date) = 3 "
-                    + "AND cours.id=seance.id_cours "
-                    + "AND type_cours.id=seance.id_type");
+                    
+                  listeMardi = maconnexion.remplirChampsRequete("SELECT seance.id,cours.nom , groupe.nom,salle.nom,site.nom,type_cours.nom, utilisateur.nom, seance.heure_debut,seance.heure_fin,seance.etat "
+                          + "FROM seance,seance_groupes,groupe,cours,salle,seance_salles,site,type_cours,utilisateur,seance_enseignants"
+                          + " WHERE seance_groupes.id_seance=seance.id "
+                          + "AND groupe.id=seance_groupes.id_groupe "
+                          + "AND DAYOFWEEK(seance.date) = 3 "
+                          + "AND cours.id= seance.id_cours"
+                          + " AND seance.id= seance_salles.id_seance "
+                          + "AND salle.id=seance_salles.id_salle "
+                          + "AND salle.id_site=site.id "
+                          + "AND type_cours.id=seance.id_type"
+                          + " AND seance.id=seance_enseignants.id_seance "
+                          + "AND seance_enseignants.id_enseignant=utilisateur.id ");
             for (String liste1 : listeMardi) {
                     courMardi.add(liste1);
                 }
@@ -216,19 +229,24 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
     
     public ArrayList<String> afficherMercredi() throws SQLException {
         ArrayList<String> listeMercredi = null;
+        int i;
+        i=f.returnID(3);
+        System.out.println(i);
         try {
             // recupérér les résultats de la requete
-              listeMercredi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
-                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
-                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
-                    + "AND seance.id=seance_groupes.id_seance "
-                    + "AND groupe.id=seance_groupes.id_groupe "
-                    + "AND seance.id=seance_salles.id_seance "
-                    + "AND salle.id=seance_salles.id_salle "
-                    + "AND site.id=salle.id_site "
-                    + "AND DAYOFWEEK(seance.date) = 4 "
-                    + "AND cours.id=seance.id_cours "
-                    + "AND type_cours.id=seance.id_type");
+              listeMercredi = maconnexion.remplirChampsRequete("SELECT seance.id,cours.nom , groupe.nom,salle.nom,site.nom,type_cours.nom, utilisateur.nom, seance.heure_debut,seance.heure_fin,seance.etat"
+                          + "FROM seance,seance_groupes,groupe,cours,salle,seance_salles,site,type_cours,utilisateur,seance_enseignants"
+                          + " WHERE seance_groupes.id_seance=seance.id "
+                          + "AND groupe.id=seance_groupes.id_groupe "
+                          + "AND DAYOFWEEK(seance.date) = 4 "
+                          + "AND cours.id= seance.id_cours"
+                          + " AND seance.id= seance_salles.id_seance "
+                          + "AND salle.id=seance_salles.id_salle "
+                          + "AND salle.id_site=site.id "
+                          + "AND type_cours.id=seance.id_type"
+                          + " AND seance.id=seance_enseignants.id_seance "
+                          + "AND seance_enseignants.id_enseignant=utilisateur.id "
+                   );
 
 
             for (String liste1 : listeMercredi) {
@@ -241,19 +259,22 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
     
     public ArrayList<String> afficherJeudi() throws SQLException {
         ArrayList<String> listeJeudi = null;
+       
         try {
             // recupérér les résultats de la requete
-             listeJeudi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
-                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
-                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
-                    + "AND seance.id=seance_groupes.id_seance "
-                    + "AND groupe.id=seance_groupes.id_groupe "
-                    + "AND seance.id=seance_salles.id_seance "
-                    + "AND salle.id=seance_salles.id_salle "
-                    + "AND site.id=salle.id_site "
-                    + "AND DAYOFWEEK(seance.date) = 5 "
-                    + "AND cours.id=seance.id_cours "
-                    + "AND type_cours.id=seance.id_type");
+             listeJeudi = maconnexion.remplirChampsRequete("SELECT seance.id,cours.nom , groupe.nom,salle.nom,site.nom,type_cours.nom, utilisateur.nom, seance.heure_debut,seance.heure_fin,seance.etat "
+                          + "FROM seance,seance_groupes,groupe,cours,salle,seance_salles,site,type_cours,utilisateur,seance_enseignants"
+                          + " WHERE seance_groupes.id_seance=seance.id "
+                          + "AND groupe.id=seance_groupes.id_groupe "
+                          + "AND DAYOFWEEK(seance.date) = 5 "
+                          + "AND cours.id= seance.id_cours"
+                          + " AND seance.id= seance_salles.id_seance "
+                          + "AND salle.id=seance_salles.id_salle "
+                          + "AND salle.id_site=site.id "
+                          + "AND type_cours.id=seance.id_type"
+                          + " AND seance.id=seance_enseignants.id_seance "
+                          + "AND seance_enseignants.id_enseignant=utilisateur.id "
+                    );
 
             for (String liste1 : listeJeudi) {
                     courJeudi.add(liste1);
@@ -263,31 +284,46 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
         return listeJeudi;
     }
     
-    public ArrayList<String> afficherVendredi() throws SQLException {
+    public ArrayList<String> afficherVendredi() throws SQLException, IOException {
         ArrayList<String> listeVendredi = null;
+        int a;
+        f.returnID(3);
+        System.out.println(f);
+        //System.out.println(returnID(3));
         try {
             // recupérér les résultats de la requete
-                listeVendredi = maconnexion.remplirChampsRequete("SELECT seance.id, utilisateur.nom, groupe.nom, salle.nom, site.nom, cours.nom,type_cours.nom "
-                    + "FROM seance, utilisateur, seance_enseignants, groupe, seance_groupes,salle,site,seance_salles,cours,type_cours "
-                    + "WHERE utilisateur.id=seance_enseignants.id_enseignant "
-                    + "AND seance.id=seance_groupes.id_seance "
-                    + "AND groupe.id=seance_groupes.id_groupe "
-                    + "AND seance.id=seance_salles.id_seance "
-                    + "AND salle.id=seance_salles.id_salle "
-                    + "AND site.id=salle.id_site "
-                    + "AND DAYOFWEEK(seance.date) = 6 "
-                    + "AND cours.id=seance.id_cours "
-                    + "AND type_cours.id=seance.id_type");
+                listeVendredi = maconnexion.remplirChampsRequete("SELECT seance.id,cours.nom , groupe.nom,salle.nom,site.nom,type_cours.nom, utilisateur.nom, seance.heure_debut,seance.heure_fin,seance.etat "
+                          + "FROM seance,seance_groupes,groupe,cours,salle,seance_salles,site,type_cours,utilisateur,seance_enseignants"
+                          + " WHERE seance_groupes.id_seance=seance.id "
+                          + "AND groupe.id=seance_groupes.id_groupe "
+                          + "AND DAYOFWEEK(seance.date) = 6 "
+                         
+                          + "AND cours.id= seance.id_cours"
+                          + " AND seance.id= seance_salles.id_seance "
+                          + "AND salle.id=seance_salles.id_salle "
+                          + "AND salle.id_site=site.id "
+                          + "AND type_cours.id=seance.id_type"
+                          + " AND seance.id=seance_enseignants.id_seance "
+                          + "AND seance_enseignants.id_enseignant=utilisateur.id "
+                   );
 
             for (String liste1 : listeVendredi) {
+                    
                     courVendredi.add(liste1);
+                    courVendredi.add("");
                 }
         }catch (SQLException e) {
         }
         return listeVendredi;
     }
-    
-    public void affichage() throws SQLException{
+
+
+    /**
+     *
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void affichage() throws SQLException, IOException{
         try {
                     // tentative de connexion si les 4 attributs sont remplis
                     //maconnexion = new Connexion("jps", "root", "");
@@ -320,6 +356,7 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                     
 
                     // afficher les résultats de la requete selectionnee
+                    
                     afficherLundi();
                     afficherMardi();
                     afficherMercredi();
@@ -329,16 +366,22 @@ public class Fenetre extends JFrame implements ActionListener, ItemListener {
                     System.out.println("Connexion echouee : probleme de classe");
                     cnfe.printStackTrace();
                 }
-    }
+    }    
+   
+
     /**
      *
      * Pour gerer les actions sur les boutons on utilise la fonction
      * actionPerformed
      *
      * @param evt
-     */
+
+
+*       */
+
     @Override
     @SuppressWarnings("CallToThreadDumpStack")
+    
     public void actionPerformed(ActionEvent evt) {
        
     }

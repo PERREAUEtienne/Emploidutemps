@@ -3,8 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/Controlleur/Promotion.java</file>
+            <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/piscinejava/FenetreAdmin.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/CoursDAO.java</file>
-            <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/Controlleur/PiscineJava.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/piscinejava/Controleur.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/piscinejava/SdzConnection.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/UtilisateurDAO.java</file>
@@ -13,12 +14,12 @@
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/Seance_enseignantsDAO.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/Controlleur/Cours.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/SiteDAO.java</file>
-            <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/piscinejava/Interface.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/EnseignantDAO.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/piscinejava/Fenetre.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/Controlleur/Utilisateur.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/EtudiantDAO.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/Controlleur/Type_cours.java</file>
+            <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/SeanceDAO.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/DAO.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/Seance_groupesDAO.java</file>
             <file>file:/C:/Users/etien/OneDrive/Documents/NetBeansProjects/Emploidutemps/Emploidutemps/src/DAO/PromotionDAO.java</file>
